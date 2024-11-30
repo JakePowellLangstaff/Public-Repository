@@ -1,0 +1,11 @@
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+
+1****cd "Practical 9"
+2*****
+pip install cryptograpy
+
+
+
+OSPF
+XSS IN LABS ZAP PRACTICE
