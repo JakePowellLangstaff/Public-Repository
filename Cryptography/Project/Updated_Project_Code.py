@@ -76,14 +76,14 @@ def decrypt_message(private_key, encrypted_chunks):
     return b"".join(decrypted_chunks)
 
 long_plaintext = os.urandom(10240)  # 10 KB
-before_encrypt = time.perf_counter()
+before_encrypt = time.perf_counter() #timer
 long_ciphertext = encrypt_message(public_key_rsa, long_plaintext, 32)
-after_encrypt = time.perf_counter()
+after_encrypt = time.perf_counter() #timer
 print(f"Encryption Time: {after_encrypt - before_encrypt:.6f} seconds")
 
-before_decrypt = time.perf_counter()
+before_decrypt = time.perf_counter() #timer
 long_plaintext_2 = decrypt_message(private_key_rsa, long_ciphertext)
-after_decrypt = time.perf_counter()
+after_decrypt = time.perf_counter() #timer
 print(f"Decryption Time: {after_decrypt - before_decrypt:.6f} seconds")
 
 # RSA Sign and Verify Timing
