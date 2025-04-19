@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        select {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ping a Host</h1>
+        <form action="/process" method="POST">
+            <label>Provide IP address or Domain:</label>
+            <button onclick="location.href='mainPage.html'">Go to Another Page</button>
+            <input type="text" name="ip_address" placeholder="Enter IP or domain" required>
+            <br>
+           
+			 
+          <label>✓/X Options for scan:</label><br>
+
+			<input type="checkbox" id="ping" name="scan_ping" value="true">
+		<label for="ping">Ping Scan</label><br>
+
+		<input type="checkbox" id="tcp" name="scan_tcp" value="true">
+		<label for="tcp">TCP Scan</label><br>
+
+		<input type="checkbox" id="os" name="scan_os" value="true">
+		<label for="os">OS Detection</label><br>
+
+		<input type="checkbox" id="vuln" name="scan_vuln" value="true">
+		<label for="vuln">Vulnerability Scan</label><br>
+		<input type="checkbox" id="dns" name="scan_dns" value="true">
+		<label for="dns">DNS Resolution</label><br><br>
+			<button type="submit">Submit</button>
+</form>
+    </div>
+</body>
+</html>
