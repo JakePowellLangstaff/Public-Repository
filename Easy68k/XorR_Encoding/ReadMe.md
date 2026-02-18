@@ -1,10 +1,10 @@
 # XorR_Encoded.asm
 
 ## Author Name
-Your Name Here
+Jake Powell Langstaff
 
 ## Student Number
-Your Student Number Here
+C00287662
 
 ## Licence Details (GPL recommended)
 (Leave this section blank — to be filled in later)
@@ -45,6 +45,7 @@ a.out
 Step 3 – Run the program
 bash
 ./a.out
+
 Issues / Notes
 The program reads up to 24 bytes (23 characters plus newline).
 
