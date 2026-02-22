@@ -36,17 +36,17 @@ nasm -f elf64 XorR_Encoded.asm
 This generates:
 XorR_Encoded.o
 
-Step 2 – Link the object file
+### Step 2 – Link the object file
 bash
 ld XorR_Encoded.o
 This produces the default executable:
 a.out
 
-Step 3 – Run the program
+### Step 3 – Run the program
 bash
 ./a.out
 
-Issues / Notes
+## Issues / Notes
 The program reads up to 24 bytes (23 characters plus newline).
 
 The newline character entered by pressing Enter is also XOR-encoded.
