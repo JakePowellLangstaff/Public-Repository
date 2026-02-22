@@ -1,6 +1,6 @@
 ;;; Turn into an executable with the following two commands
-;;; 1. nasm -f elf64 <filename>.asm
-;;; 2. ld <filename>.o
+;;; 1. nasm -f elf64 <XorR_Encoded>.asm
+;;; 2. ld <XorR_Encoded>.o
 ;;; -------------------------------------------------------
 ;;; This program:
 ;;; 1. Prompts user for input (max 23 chars + newline)
@@ -8,15 +8,14 @@
 ;;; 3. Prints the encoded result
 ;;; -------------------------------------------------------
 
-    SYS_READ   equ     0          ; Linux syscall number for sys_read
+    SYS_READ   equ     0          ; Linux syscall  for sys_read
     SYS_WRITE  equ     1          ; Linux syscall number for sys_write
-    SYS_EXIT   equ     60         ; Linux syscall number for sys_exit
+    SYS_EXIT   equ     60         ; Linux syscall no for sys_exit
     STDIN      equ     0          ; File descriptor for standard input
     STDOUT     equ     1          ; File descriptor for standard output
-
 ; --------------------------------
-section .bss                     ; Uninitialized data section
-                                 ; Memory reserved here does NOT increase file size
+section .bss                     ; Uninitialized data sec
+                                 ; Memory reserve
 
     MaxLength equ     24         ; Maximum bytes to read (23 chars + newline)
     UserInput     resb    MaxLength
@@ -31,17 +30,17 @@ section .data                    ; Initialized data section
     prompt_len equ     $ - prompt
                                  ; Compute length of prompt string
 
-    text       db      10, "When XOR encoded you get: "   ; REPLACED (message changed)
+    text       db      10, "When XOR encoded you get: "   ; I change msg
                                  ; 10 = newline character
-                                 ; Message printed before encoded output
+                                 ; Msg printed before encoded output
 
     text_len   equ     $ - text
                                  ; Compute length of result message
 
-    key        db      "ABC"          ; <<< ADDED
+    key        db      "ABC"          ; added in to temp
                                  ; XOR key used for encoding
 
-    keyLen     equ     $ - key        ; <<< ADDED
+    keyLen     equ     $ - key        ; added
                                  ; Length of XOR key (3 bytes)
 ; --------------------------------
 section .text                    ; Code section
@@ -74,22 +73,22 @@ _start:
 
     ;; Call XOR encoding procedure
 
-    pop     rsi                  ; <<< ADDED (length → RSI)
+    pop     rsi                  ; added (length → RSI)
                                  ; rsi = length parameter
 
-    push    rsi                  ; <<< ADDED (save again for printing)
+    push    rsi                  ; added (save again for printing)
                                  ; Save length again for later output
 
-    mov     rdi, UserInput       ; <<< ADDED (string → RDI)
+    mov     rdi, UserInput       ;  added (string to  RDI)
                                  ; rdi = pointer to input buffer
 
-    call    swapcase             ; REPLACED (now does XOR, not swapcase)
-                                 ; swapcase(buffer, length)
+    call    swapcase             ; replaced now does XOR, instead of the previous swapCase func
+                                 ;
 
 ;;; Sample rot47 call
 ;   mov rdi,UserInput            ; REMOVED
-;   mov rsi,MaxLength            ; REMOVED
-;   call rot47                   ; REMOVED
+;   mov rsi,MaxLength            ; KABLAM 
+;   call rot47                   ; ERASED
 
     ;; Write out result message
                                  ; sys_write(STDOUT, text, text_len)
@@ -118,7 +117,12 @@ _start:
     mov     rax, SYS_EXIT        ; syscall number for exit
     syscall
 
-; ==========================================================
+
+
+
+
+
+; ======================================================================
 ; XOR Encoding Procedure (Null Preserving)
 ; ==========================================================
 
@@ -129,71 +133,71 @@ swapcase:        ; REPLACED ENTIRE FUNCTION
                  ; Returns:
                  ;   rax = 1 (success)
 
-    push rbp                     ; <<< ADDED
+    push rbp                     ; added
                                  ; Save caller base pointer
 
-    mov rbp, rsp                 ; <<< ADDED
+    mov rbp, rsp                 ; added
                                  ; Create new stack frame
 
-    mov rcx, 0                   ; <<< ADDED (string index)
+    mov rcx, 0                   ; added (string index)
                                  ; rcx = index into buffer
 
-    mov r8, 0                    ; <<< ADDED (key index)
+    mov r8, 0                    ; added (key index)
                                  ; r8 = index into XOR key
 
 encode_loop:
 
-    cmp rcx, rsi                 ; <<< ADDED (end of string?)
+    cmp rcx, rsi                 ; added (end of string?)
                                  ; If rcx >= length, stop
 
-    jge done                     ; <<< ADDED
+    jge done                     ; added
 
-    mov al, [rdi + rcx]          ; <<< ADDED (load char)
-                                 ; Load current character
+    mov al, [rdi + rcx]          ; added load char
+                                 ; Load currnt character
 
-    cmp al, 0                    ; <<< ADDED (null preserve)
+    cmp al, 0                    ; added (null preserve)
                                  ; If byte is NULL (0x00)
 
-    je skip_xor                  ; <<< ADDED
+    je skip_xor                  ; added
                                  ; Skip XOR so null bytes remain unchanged
 
-    mov bl, [key + r8]           ; <<< ADDED (load key char)
+    mov bl, [key + r8]           ; added load key char
                                  ; Load current key character
 
-    xor al, bl                   ; <<< ADDED
+    xor al, bl                   ; added
                                  ; XOR data byte with key byte
 
-    mov [rdi + rcx], al          ; <<< ADDED (store result)
+    mov [rdi + rcx], al          ; added store result
                                  ; Store encoded byte back
 
 skip_xor:
 
-    inc rcx                      ; <<< ADDED
+    inc rcx                      ; added
                                  ; Move to next buffer byte
 
-    inc r8                       ; <<< ADDED
+    inc r8                       ; added
                                  ; Move to next key byte
 
-    cmp r8, keyLen               ; <<< ADDED (key reset check)
+    cmp r8, keyLen               ; added key reset checkked
                                  ; If key index reached end
 
-    jl continue_loop             ; <<< ADDED
+    jl continue_loop             ; added
                                  ; If not, continue
 
-    mov r8, 0                    ; <<< ADDED (reset key index)
-                                 ; Reset key index (repeat key)
+    mov r8, 0                    ; added reset key index
+                                 ; Reset key index /repeat key
 
 continue_loop:
-    jmp encode_loop              ; <<< ADDED
+    jmp encode_loop              ; added
                                  ; Loop back
 
 done:
-    mov rax, 1                   ; <<< ADDED (return success)
+    mov rax, 1                   ; added (return success)
 
-    mov rsp, rbp                 ; <<< ADDED
+    mov rsp, rbp                 ; added
                                  ; Restore stack pointer
 
-    pop rbp                      ; <<< ADDED
+    pop rbp                      ; added
                                  ; Restore base pointer
 
     ret                          ; Return to caller
@@ -212,7 +216,7 @@ loop:
     cmp al,32                    ; If ASCII <= 32 (non-printable)
     jle next
 
-    cmp al,127                   ; If ASCII >= 127
+    cmp al,127                   ; If ASCII >greater then or equal too 127
     jge next
 
     cmp al,80                    ; Midpoint check
