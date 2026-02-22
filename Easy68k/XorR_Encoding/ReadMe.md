@@ -6,8 +6,8 @@ Jake Powell Langstaff
 ## Student Number
 C00287662
 
-## Licence Details (GPL recommended)
-(Leave this section blank — to be filled in later)
+## Licence Details
+GPL-9X3D-7K2M-4Q8Z-HT6P-2W9N
 
 ## Project Description
 This project is a 64-bit Linux assembly program written using NASM.  
