@@ -5,6 +5,4 @@
 ## Overview
 This project is simply a endless runner in which I created. Some of the files are used simply for sound effects. 
 The main .asm is what you need to run in Easy68k.
-There is also a video link in the directory for gameplay.
-Have fun.
 
